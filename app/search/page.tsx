@@ -25,8 +25,8 @@ const Search = () => {
       setLoading(true);
       const res = await fetch(
         `https://api.discogs.com/database/search?q=${encodeURIComponent(
-          query,
-        )}&type=master&token=lAvbnLFabuhjRNFvCpGyJbDNfdRCcdwpKZePCXov`,
+          query
+        )}&type=master&token=${process.env.NEXT_PUBLIC_DISCOGS_TOKEN}`
       );
       const data = await res.json();
       setResults(data.results || []);
@@ -46,43 +46,41 @@ const Search = () => {
     return () => clearTimeout(delayDebounce);
   }, [search]);
 
-
-
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <div className="mb-4 flex gap-2">
+    <div className='p-6 max-w-xl mx-auto'>
+      <div className='mb-4 flex gap-2'>
         <input
-          type="text"
+          type='text'
           onChange={(e) => setSearch(e.target.value)}
           value={search}
-          placeholder="Keresés"
-          className="border border-gray-300 px-3 py-2 w-full"
+          placeholder='Keresés'
+          className='border border-gray-300 px-3 py-2 w-full'
         />
         <button
           onClick={() => vinylsTable(search)}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className='bg-blue-600 text-white px-4 py-2 rounded'
           disabled={loading || !search.trim()}
         >
           {loading ? 'Keresés...' : 'Keresés'}
         </button>
       </div>
 
-      <ul className="space-y-4">
+      <ul className='space-y-4'>
         {results.map((item) => (
           <li key={item.id}>
             <Link
-              href={`/search/${item.id}`}
-              className="flex items-center gap-4 border-b pb-2"
-              target="_blank"
+              href={`/search/${item.id.toString()}`}
+              className='flex items-center gap-4 border-b pb-2'
+              target='_blank'
             >
               <Image
                 src={item.cover_image}
                 alt={item.title}
-                className="w-16 h-16 object-cover rounded"
+                className='w-16 h-16 object-cover rounded'
                 width={424}
                 height={424}
               />
-              <span className="text-gray-800 font-medium">{item.title}</span>
+              <span className='text-gray-800 font-medium'>{item.title}</span>
             </Link>
           </li>
         ))}
