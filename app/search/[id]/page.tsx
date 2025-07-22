@@ -1,22 +1,20 @@
 // app/search/[id]/page.tsx
+
 import { Metadata } from 'next';
 import Image from 'next/image';
 
-interface Props {
-  params: { id: string };
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   return {
     title: `Lemez: ${params.id}`,
   };
 }
 
-export default async function ResultPage({ params }: Props) {
+export default async function Page({ params }: { params: { id: string } }) {
   const res = await fetch(`https://api.discogs.com/masters/${params.id}`);
   const data = await res.json();
 
   const mainReleaseId = data.main_release;
+
   const releaseRes = await fetch(
     `https://api.discogs.com/releases/${mainReleaseId}`
   );
@@ -30,21 +28,19 @@ export default async function ResultPage({ params }: Props) {
           <Image
             src={releaseData.images?.[0]?.resource_url || '/placeholder.jpg'}
             alt={data.title}
-            className='w-full md:w-64 h-auto object-cover rounded shadow-lg'
+            width={256}
+            height={256}
+            className='rounded shadow-lg object-cover'
           />
 
           {/* Album adatok */}
           <div className='flex-1'>
-            <h1 className='text-3xl font-bold text-gray-900 mb-2'>
-              {data.title}
-            </h1>
+            <h1 className='text-3xl font-bold text-gray-900 mb-2'>{data.title}</h1>
             <p className='text-lg text-gray-700 mb-1 font-medium'>
               {data.artists?.map((artist: any) => artist.name).join(', ')}
             </p>
             {data.year && (
-              <p className='text-sm text-gray-500 mb-4'>
-                Megjelenés éve: {data.year}
-              </p>
+              <p className='text-sm text-gray-500 mb-4'>Megjelenés éve: {data.year}</p>
             )}
 
             {releaseData.labels?.length > 0 && (
@@ -57,9 +53,7 @@ export default async function ResultPage({ params }: Props) {
             )}
 
             {releaseData.country && (
-              <p className='text-sm text-gray-500'>
-                Ország: {releaseData.country}
-              </p>
+              <p className='text-sm text-gray-500'>Ország: {releaseData.country}</p>
             )}
           </div>
         </div>
@@ -67,9 +61,7 @@ export default async function ResultPage({ params }: Props) {
         {/* Tracklista */}
         {data.tracklist && data.tracklist.length > 0 && (
           <div className='mt-8'>
-            <h2 className='text-xl font-semibold text-gray-800 mb-4'>
-              Tracklista
-            </h2>
+            <h2 className='text-xl font-semibold text-gray-800 mb-4'>Tracklista</h2>
             <ul className='space-y-2 text-gray-700 list-disc list-inside'>
               {data.tracklist.map((track: any, idx: number) => (
                 <li key={idx}>
@@ -82,6 +74,8 @@ export default async function ResultPage({ params }: Props) {
             </ul>
           </div>
         )}
+
+        {/* Gombok */}
         <div className='mt-12 flex flex-col md:flex-row w-full sm:w-2/3 md:w-full m-auto'>
           <button
             type='button'
