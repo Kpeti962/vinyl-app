@@ -9,7 +9,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
   const res = await fetch(`https://api.discogs.com/masters/${params.id}`);
   const data = await res.json();
 
@@ -30,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             alt={data.title}
             width={256}
             height={256}
-            className='rounded shadow-lg object-cover'
+            className='rounded shadow-lg object-cover w-full'
           />
 
           {/* Album adatok */}

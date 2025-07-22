@@ -79,6 +79,8 @@ const Search = () => {
                 src={item.cover_image}
                 alt={item.title}
                 className="w-16 h-16 object-cover rounded"
+                width={424}
+                height={424}
               />
               <span className="text-gray-800 font-medium">{item.title}</span>
             </Link>
