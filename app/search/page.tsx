@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -74,7 +75,7 @@ const Search = () => {
               className="flex items-center gap-4 border-b pb-2"
               target="_blank"
             >
-              <img
+              <Image
                 src={item.cover_image}
                 alt={item.title}
                 className="w-16 h-16 object-cover rounded"

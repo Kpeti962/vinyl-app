@@ -1,5 +1,6 @@
 // app/search/[id]/page.tsx
 import { Metadata } from 'next';
+import Image from 'next/image';
 
 interface Props {
   params: { id: string };
@@ -26,7 +27,7 @@ export default async function ResultPage({ params }: Props) {
       <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6'>
         {/* Fejlesztett fejléc */}
         <div className='flex flex-col md:flex-row gap-6 items-start'>
-          <img
+          <Image
             src={releaseData.images?.[0]?.resource_url || '/placeholder.jpg'}
             alt={data.title}
             className='w-full md:w-64 h-auto object-cover rounded shadow-lg'
