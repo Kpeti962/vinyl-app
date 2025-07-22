@@ -78,6 +78,20 @@ export default function Page({
             </ul>
           </div>
         )}
+         <div className="mt-12 flex flex-wrap gap-4">
+          <button
+            type="button"
+            className="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 rounded-lg text-sm px-5 py-2.5"
+          >
+            Kívánságlistához
+          </button>
+          <button
+            type="button"
+            className="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-5 py-2.5"
+          >
+            Megszerezve
+          </button>
+        </div>
       </div>
     </div>
   )
