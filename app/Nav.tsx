@@ -24,13 +24,13 @@ const NavBar = () => {
             `}
           >
             <li className='px-6 py-3 md:p-0 text-center hover:text-blue-600 cursor-pointer'>
-              <Link href='/owned'>Saját gyűjtemény</Link>
+              <Link onClick={() => setOpen(!open)} href='/owned'>Saját gyűjtemény</Link>
             </li>
             <li className='px-6 py-3 md:p-0 text-center hover:text-blue-600 cursor-pointer'>
-              <Link href='/wishlist'>Kívánságlista</Link>
+              <Link onClick={() => setOpen(!open)} href='/wishlist'>Kívánságlista</Link>
             </li>
             <li className='px-6 py-3 md:p-0 text-center hover:text-blue-600 cursor-pointer'>
-              <Link href='/search'>Böngészés</Link>
+              <Link onClick={() => setOpen(!open)} href='/search'>Böngészés</Link>
             </li>
           </ul>
         </nav>
