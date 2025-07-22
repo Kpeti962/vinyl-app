@@ -2,7 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import React, { useEffect, useState } from 'react';
+
 
 interface VinylResult {
   id: number;
@@ -11,6 +14,8 @@ interface VinylResult {
 }
 
 const Search = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<VinylResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,12 +44,25 @@ const Search = () => {
 
   // 🔁 Debounce hatás: várunk 500ms-ot gépelés után
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
+     const delayDebounce = setTimeout(() => {
+    if (search.trim()) {
+      const query = new URLSearchParams();
+      query.set('q', search);
+      router.replace(`?${query.toString()}`); // frissíti az URL-t keresés közben
       vinylsTable(search);
-    }, 100); // 500 milisec várakozás
+    }
+  }, 300);
 
-    return () => clearTimeout(delayDebounce);
+  return () => clearTimeout(delayDebounce);
   }, [search]);
+
+  useEffect(() => {
+  const query = searchParams.get('q');
+  if (query) {
+    setSearch(query);
+    vinylsTable(query);
+  }
+}, []);
 
   return (
     <div className='p-6 max-w-xl mx-auto'>
@@ -71,7 +89,7 @@ const Search = () => {
             <Link
               href={`/search/${item.id.toString()}`}
               className='flex items-center gap-4 border-b pb-2'
-              target='_blank'
+              
             >
               <Image
                 src={item.cover_image}
