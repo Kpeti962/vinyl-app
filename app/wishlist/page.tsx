@@ -50,20 +50,13 @@ const WishList = () => {
     fetchData();
   }, [author, title]);
 
-  // Törlés funkció
+  // Törlés 
   const handleDelete = (id: number) => {
-    setData((prev) => prev.filter(vinyl => vinyl.id !== id));
-    // Itt tudnál API hívást is indítani, ha távoli törlés kell
+    
   };
 
-  // Megszerezve állapot kapcsolása
+  // Megszerezve 
   const toggleAcquired = (id: number) => {
-    setData((prev) =>
-      prev.map(vinyl =>
-        vinyl.id === id ? { ...vinyl, acquired: !vinyl.acquired } : vinyl
-      )
-    );
-    // Itt API hívás szintén beilleszthető, ha backend oldalt is frissítenél
   };
 
   return (
