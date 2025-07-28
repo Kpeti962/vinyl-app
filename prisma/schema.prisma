@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+  output = "../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -18,4 +18,6 @@ model MyVinyls {
   id     Int    @id @default(autoincrement())
   author String
   title  String
+
+  @@unique([author, title])  
 }
