@@ -6,11 +6,10 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -19,5 +18,5 @@ model WishedVinyls {
   author String
   title  String
 
-  @@unique([author, title])  
+  @@unique([author, title])
 }
