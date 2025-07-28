@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const exists = await prisma.myVinyls.findFirst({
+    const exists = await prisma.wishedVinyls.findFirst({
       where: {
         author: body.author,
         title: body.title,
@@ -28,14 +28,14 @@ export async function POST(request: NextRequest) {
       ); // 409 Conflict
     }
 
-    const myvinyls = await prisma.myVinyls.create({
+    const wishedVinyls = await prisma.wishedVinyls.create({
       data: {
         author: body.author,
         title: body.title,
       },
     });
 
-    return NextResponse.json(myvinyls, { status: 201 });
+    return NextResponse.json(wishedVinyls, { status: 201 });
   } catch (error) {
     console.error('POST API hiba:', error);
     return NextResponse.json({ error: 'Szerverhiba történt' }, { status: 500 });
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     if (title) where.title = title;
 
     // Ez visszaad egy bakelit listát, nem csak a darabszámot
-    const vinyls = await prisma.myVinyls.findMany({ where });
+    const vinyls = await prisma.wishedVinyls.findMany({ where });
 
     return NextResponse.json(vinyls, { status: 200 });
   } catch (error) {

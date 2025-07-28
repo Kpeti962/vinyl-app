@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model MyVinyls {
+model WishedVinyls {
   id     Int    @id @default(autoincrement())
   author String
   title  String
