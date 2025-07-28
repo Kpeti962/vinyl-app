@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 interface Vinyl {
@@ -51,10 +52,15 @@ const WishList = () => {
   }, [author, title]);
 
   // Törlés 
-  const handleDelete = (id: number) => {
-    
-  };
-
+  const deleteItem = async (id: number) => {
+  try {
+    await axios.delete(`/api/myvinyls/${id}`);
+    // Siker esetén frissíted a listát
+    setData(prev => prev.filter(item => item.id !== id));
+  } catch (error) {
+    console.error('Hiba történt:', error);
+  }
+};
   // Megszerezve 
   const toggleAcquired = (id: number) => {
   };
@@ -106,7 +112,7 @@ const WishList = () => {
                   {acquired ? 'Megszerezve' : 'Megszerezve'}
                 </button>
                 <button
-                  onClick={() => handleDelete(id)}
+                  onClick={() => deleteItem(id)}
                   className="px-3 py-1 rounded text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 transition"
                   aria-label="Törlés"
                 >
