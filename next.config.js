@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    eslint: {
-        ignoreDuringBuilds: true,
-    },
-    images: {
-    domains: ['i.discogs.com'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['i.discogs.com', 'st.discogs.com'],
+    
   },
 }
 
