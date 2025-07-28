@@ -35,7 +35,7 @@ const NavBar = () => {
         {/* Menü */}
         <nav
           className={`absolute top-full left-0 w-full bg-white md:static md:bg-transparent md:w-auto z-40 transition-all duration-300 ease-in-out ${
-            open ? 'flex' : 'hidden md:flex'
+            open ? 'flex justify-center' : 'hidden md:flex'
           }`}
         >
           <ul className="flex flex-col md:flex-row gap-2 md:gap-8 text-gray-700 text-base font-medium py-3 md:py-0 px-2 md:px-0">
@@ -72,7 +72,7 @@ const NavBar = () => {
       {/* Mobile menu background overlay */}
       {open && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 z-30 md:hidden"
+          className="fixed top-0 left-0 w-full h-full bg-opacity-30 z-30 md:hidden"
           onClick={() => setOpen(false)}
         />
       )}
