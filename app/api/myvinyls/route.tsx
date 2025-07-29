@@ -6,6 +6,18 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    if (body.id !== undefined && typeof body.id !== 'number') {
+      // Ha string érkezik, próbáld meg konvertálni
+      const parsedId = Number(body.id);
+      if (!Number.isInteger(parsedId)) {
+        return NextResponse.json(
+          { error: 'Az id-nek egész számnak kell lennie.' },
+          { status: 400 }
+        );
+      }
+      body.id = parsedId;
+    }
+
     const validation = schema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
@@ -16,6 +28,7 @@ export async function POST(request: NextRequest) {
 
     const exists = await prisma.wishedVinyls.findFirst({
       where: {
+        id: body.id,
         author: body.author,
         title: body.title,
       },
@@ -30,6 +43,7 @@ export async function POST(request: NextRequest) {
 
     const wishedVinyls = await prisma.wishedVinyls.create({
       data: {
+        id: body.id,
         author: body.author,
         title: body.title,
       },
@@ -42,16 +56,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-
-
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
+    const id = searchParams.get('id') || undefined;
     const author = searchParams.get('author') || undefined;
     const title = searchParams.get('title') || undefined;
 
-    const validation = schema.safeParse({ author, title });
+    const validation = schema.safeParse({ id, author, title });
     if (!validation.success) {
       return NextResponse.json(
         { errors: validation.error.issues },
@@ -60,10 +72,20 @@ export async function GET(request: NextRequest) {
     }
 
     const where: any = {};
+    if (id) {
+      const parsedId = Number(id);
+      if (!isNaN(parsedId)) {
+        where.id = parsedId;
+      } else {
+        return NextResponse.json(
+          { error: 'Az id csak szám lehet' },
+          { status: 400 }
+        );
+      }
+    }
     if (author) where.author = author;
     if (title) where.title = title;
 
-    // Ez visszaad egy bakelit listát, nem csak a darabszámot
     const vinyls = await prisma.wishedVinyls.findMany({ where });
 
     return NextResponse.json(vinyls, { status: 200 });
@@ -75,6 +97,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
-
 

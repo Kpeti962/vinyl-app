@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 
 interface WishlistButtonProps {
+  id: number;
   author: string;
   title: string;
 }
 
-export default function WishlistButton({ author, title }: WishlistButtonProps) {
+export default function WishlistButton({ id, author, title }: WishlistButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -21,7 +22,7 @@ export default function WishlistButton({ author, title }: WishlistButtonProps) {
       const res = await fetch('/api/myvinyls', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author, title }),
+        body: JSON.stringify({ id, author, title }),
       });
 
       if (!res.ok) {

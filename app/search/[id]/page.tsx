@@ -89,6 +89,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         )}
         <div className='mt-12 flex flex-wrap gap-4'>
           <WishlistButton
+          id={masterData.id}
             author={masterData.artists?.[0]?.name ?? '-'}
             title={masterData.title}
           />

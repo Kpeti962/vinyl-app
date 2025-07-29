@@ -14,9 +14,9 @@ datasource db {
 }
 
 model WishedVinyls {
-  id     Int    @id @default(autoincrement())
+  id     Int    @id
   author String
   title  String
 
-  @@unique([author, title])
+  @@unique([id, author, title])
 }
