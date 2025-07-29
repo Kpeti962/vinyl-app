@@ -1,16 +1,22 @@
 import { prisma } from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest } from 'next';
 
+// Next.js App Router route file (e.g. `app/api/myvinyls/[id]/route.ts`)
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = context.params;
+  const id = (await params).id;
 
   try {
     await prisma.wishedVinyls.delete({ where: { id: Number(id) } });
     return NextResponse.json({ message: 'Törlés sikeres' }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Hiba történt a törlés során' }, { status: 500 });
+    console.error('Törlés hiba:', error);
+    return NextResponse.json(
+      { error: 'Hiba történt a törlés során' },
+      { status: 500 }
+    );
   }
 }
