@@ -18,5 +18,19 @@ model WishedVinyls {
   author String
   title  String
 
+  acquisitions Acquisition[] 
+
   @@unique([id, author, title])
+}
+
+
+model Acquisition {
+  id         Int           @id @default(autoincrement())
+  vinylId    Int
+  acquiredAt DateTime      @default(now())
+  // ide jöhet még: userId, price, stb. plusz mező
+
+  vinyl      WishedVinyls  @relation(fields: [vinylId], references: [id])
+
+  @@unique([vinylId])      
 }

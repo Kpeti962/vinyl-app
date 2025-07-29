@@ -19,7 +19,7 @@ export default function WishlistButton({ id, author, title }: WishlistButtonProp
     setSuccess(false);
 
     try {
-      const res = await fetch('/api/myvinyls', {
+      const res = await fetch('/api/wishedvinyls', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, author, title }),

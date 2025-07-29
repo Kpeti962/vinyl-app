@@ -35,7 +35,7 @@ const WishList = () => {
         if (author) params.append('author', author);
         if (title) params.append('title', title);
 
-        const response = await fetch(`/api/myvinyls?${params.toString()}`, {
+        const response = await fetch(`/api/wishedvinyls?${params.toString()}`, {
           method: 'GET',
         });
 
@@ -63,7 +63,7 @@ const WishList = () => {
   // Törlés
   const deleteItem = async (id: number) => {
     try {
-      await axios.delete(`/api/myvinyls/${id}`);
+      await axios.delete(`/api/wishedvinyls/${id}`);
       // Siker esetén frissíted a listát
       setData((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
