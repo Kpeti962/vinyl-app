@@ -25,12 +25,9 @@ model WishedVinyls {
 
 
 model Acquisition {
-  id         Int           @id @default(autoincrement())
-  vinylId    Int
+  id         Int           @id
   acquiredAt DateTime      @default(now())
   // ide jöhet még: userId, price, stb. plusz mező
 
-  vinyl      WishedVinyls  @relation(fields: [vinylId], references: [id])
-
-  @@unique([vinylId])      
+  vinyl      WishedVinyls  @relation(fields: [id], references: [id])
 }

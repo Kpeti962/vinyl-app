@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     if (body.id !== undefined && typeof body.id !== 'number') {
-      // Ha string érkezik, próbáld meg konvertálni
+    //ha string érkezne
       const parsedId = Number(body.id);
       if (!Number.isInteger(parsedId)) {
         return NextResponse.json(
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Ez a bakelit már szerepel az adatbázisban.' },
         { status: 409 }
-      ); // 409 Conflict
+      ); 
     }
 
     const wishedVinyls = await prisma.wishedVinyls.create({
@@ -63,14 +63,7 @@ export async function GET(request: NextRequest) {
     const author = searchParams.get('author') || undefined;
     const title = searchParams.get('title') || undefined;
 
-    const validation = schema.safeParse({ id, author, title });
-    if (!validation.success) {
-      return NextResponse.json(
-        { errors: validation.error.issues },
-        { status: 400 }
-      );
-    }
-
+    
     const where: any = {};
     if (id) {
       const parsedId = Number(id);
@@ -86,15 +79,19 @@ export async function GET(request: NextRequest) {
     if (author) where.author = author;
     if (title) where.title = title;
 
-    const vinyls = await prisma.wishedVinyls.findMany({ where });
+   
+    const vinyls = await prisma.wishedVinyls.findMany({
+      include: { acquisitions: true }, 
+    });
 
-    return NextResponse.json(vinyls, { status: 200 });
+    const result = vinyls.map((v) => ({
+      ...v,
+      acquired: v.acquisitions.length > 0, 
+    }));
+
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error('GET API hiba:', error);
-    return NextResponse.json(
-      { error: 'Szerverhiba történt' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Szerverhiba történt' }, { status: 500 });
   }
 }
-

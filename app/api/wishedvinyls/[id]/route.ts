@@ -2,7 +2,6 @@ import { prisma } from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { NextApiRequest } from 'next';
 
-// Next.js App Router route file (e.g. `app/api/myvinyls/[id]/route.ts`)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

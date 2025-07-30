@@ -1,7 +1,6 @@
 'use client';
 
 import axios from 'axios';
-import { Link } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 interface Vinyl {
@@ -45,11 +44,8 @@ const WishList = () => {
 
         const result: Vinyl[] = await response.json();
         // Alapértelmezés szerint nincs megszerezve
-        const withAcquired = result.map((vinyl) => ({
-          ...vinyl,
-          acquired: false,
-        }));
-        setData(withAcquired);
+        
+        setData(result);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -71,7 +67,35 @@ const WishList = () => {
     }
   };
   // Megszerezve
-  const toggleAcquired = (id: number) => {};
+  const toggleAcquired = async (id: number) => {
+  try {
+    const item = data.find((d) => d.id === id);
+    if (!item) return;
+
+    if (!item.acquired) {
+      // Megszerzés POST
+      await axios.post('/api/acquisition', { vinylId: id });
+      // Frissítsd a helyi állapotot
+      setData((prev) =>
+        prev.map((vinyl) =>
+          vinyl.id === id ? { ...vinyl, acquired: true } : vinyl
+        )
+      );
+    } else {
+      // Megszerezve visszavonása DELETE
+      await axios.delete(`/api/acquisition?vinylId=${id}`);
+      // Frissítsd a helyi állapotot
+      setData((prev) =>
+        prev.map((vinyl) =>
+          vinyl.id === id ? { ...vinyl, acquired: false } : vinyl
+        )
+      );
+    }
+  } catch (error) {
+    console.error('Hiba történt a megszerzés módosításakor:', error);
+  }
+};
+
 
   return (
     <div className='max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md'>
