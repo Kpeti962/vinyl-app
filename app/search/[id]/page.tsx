@@ -2,15 +2,13 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { use } from 'react';
 import WishlistButton from './WishListButton';
-
-// ✅ NATÍV NEXT 15 PARAMS kezelés: Promise → use() használata
+import BackButton from '@/app/components/BackButton';
 
 export function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  // használhatsz await-et vagy itt is use() – mindkettő jó
   return params.then(({ id }) => ({
     title: `Lemez: ${id}`,
   }));
@@ -29,53 +27,68 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   );
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-purple-100 px-6 py-10'>
-      <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6'>
-        <div className='flex flex-col md:flex-row gap-6 items-start'>
-          <Image
-            src={releaseData.images?.[0]?.resource_url || '/placeholder.jpg'}
-            alt={masterData.title}
-            width={256}
-            height={256}
-            className='rounded shadow-lg object-cover w-full'
-          />
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-purple-100 px-4 py-10'>
+      <div className='max-w-5xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden p-6 md:p-10'>
+        <BackButton /> 
+        <div className='flex flex-col md:flex-row gap-8 items-start'>
+          {/* Lemezborító */}
+          <div className='w-full md:w-1/3'>
+            <Image
+              src={releaseData.images?.[0]?.resource_url || '/placeholder.jpg'}
+              alt={masterData.title}
+              width={400}
+              height={400}
+              className='rounded-xl shadow-md w-full object-cover aspect-square'
+            />
+          </div>
 
+          {/* Lemez információk */}
           <div className='flex-1'>
-            <h1 className='text-3xl font-bold text-gray-900 mb-2'>
+            <h1 className='text-4xl font-bold text-center text-gray-900 mb-3'>
               {masterData.title}
             </h1>
-            <p className='text-lg text-gray-700 mb-1 font-medium'>
+
+            <p className='text-xl text-gray-700 mb-1 font-medium'>
               {masterData.artists?.map((artist: any) => artist.name).join(', ')}
             </p>
+
             {masterData.year && (
-              <p className='text-sm text-gray-500 mb-4'>
-                Megjelenés éve: {masterData.year}
+              <p className='text-sm text-gray-500 mb-2'>
+                Megjelenés éve: <strong>{masterData.year}</strong>
               </p>
             )}
 
-            {releaseData.labels?.length > 0 && (
-              <p className='text-sm text-gray-500'>
-                Kiadó:{' '}
-                <span className='font-medium'>
-                  {releaseData.labels[0].name}
-                </span>
-              </p>
-            )}
-            {releaseData.country && (
-              <p className='text-sm text-gray-500'>
-                Ország: {releaseData.country}
-              </p>
-            )}
+            <div className='text-sm text-gray-600 space-y-1 mt-4'>
+              {releaseData.labels?.[0]?.name && (
+                <p>
+                  Kiadó: <strong>{releaseData.labels[0].name}</strong>
+                </p>
+              )}
+              {releaseData.country && (
+                <p>
+                  Ország: <strong>{releaseData.country}</strong>
+                </p>
+              )}
+              {masterData.genres && (
+                <p>
+                  Műfaj: <strong>{masterData.genres.join(', ')}</strong>
+                </p>
+              )}
+              {masterData.styles && (
+                <p>
+                  Stílus: <strong>{masterData.styles.join(', ')}</strong>
+                </p>
+              )}
+            </div>
           </div>
         </div>
-
         {/* Tracklista */}
-        {masterData.tracklist && masterData.tracklist.length > 0 && (
-          <div className='mt-8'>
-            <h2 className='text-xl font-semibold text-gray-800 mb-4'>
+        {masterData.tracklist?.length > 0 && (
+          <div className='mt-10'>
+            <h2 className='text-2xl font-semibold text-gray-800 mb-4'>
               Tracklista
             </h2>
-            <ul className='space-y-2 text-gray-700 list-disc list-inside'>
+            <ul className='grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-gray-700 text-sm list-disc list-inside'>
               {masterData.tracklist.map((track: any, idx: number) => (
                 <li key={idx}>
                   {track.position && (
@@ -87,15 +100,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </ul>
           </div>
         )}
+        {/* Gombok */}
         <div className='mt-12 flex flex-wrap gap-4'>
           <WishlistButton
-          id={masterData.id}
+            id={masterData.id}
             author={masterData.artists?.[0]?.name ?? '-'}
             title={masterData.title}
           />
           <button
             type='button'
-            className='text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-5 py-2.5'
+            className='text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 transition'
           >
             Megszerezve
           </button>
