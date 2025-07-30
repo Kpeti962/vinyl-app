@@ -12,7 +12,7 @@ export default function BackButton() {
       className='cursor-pointer inline-flex items-center text-sm text-black hover:text-gray-500 font-medium mb-6'
     >
       <svg
-      className='mr-2 hover:scale-110 hover:rotate-45 transition-transform duration-200'
+      className='mr-2 hover:scale-110 hover:rotate-360 transition-transform duration-500'
         fill='#000000'
         height='30px'
         width='30px'
