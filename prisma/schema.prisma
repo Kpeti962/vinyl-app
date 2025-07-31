@@ -18,16 +18,16 @@ model WishedVinyls {
   author String
   title  String
 
-  acquisitions Acquisition[] 
+  acquisitions Acquisition[]
 
   @@unique([id, author, title])
 }
 
-
 model Acquisition {
-  id         Int           @id
-  acquiredAt DateTime      @default(now())
+  id         Int      @id
+ 
+  acquiredAt DateTime @default(now())
   // ide jöhet még: userId, price, stb. plusz mező
 
-  vinyl      WishedVinyls  @relation(fields: [id], references: [id])
+  vinyl WishedVinyls @relation(fields: [id], references: [id])
 }

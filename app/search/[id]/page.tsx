@@ -4,6 +4,7 @@ import { use } from 'react';
 import WishlistButton from './WishListButton';
 import BackButton from '@/app/components/BackButton';
 import { Metadata } from 'next';
+import MarkOwnedButton from './MarkOwnedButton';
 
 export function generateMetadata({
   params,
@@ -52,7 +53,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   };
 
   const avgPrice = calculateAverage();
-  const currency = (Object.values(priceSuggestions)[0] as { currency?: string })?.currency || '';
+  const currency =
+    (Object.values(priceSuggestions)[0] as { currency?: string })?.currency ||
+    '';
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-purple-100 px-6 py-10'>
@@ -125,7 +128,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {priceSuggestions && Object.keys(priceSuggestions).length > 0 && (
               <section className='bg-indigo-50 p-5 rounded-lg shadow-inner max-w-md mx-auto md:mx-0'>
                 <h2 className='text-2xl font-semibold text-indigo-900 mb-4 border-b border-indigo-300 pb-2'>
-                  Ár-javaslatok (Discogs)
+                  Árak (Discogs)
                 </h2>
 
                 {avgPrice !== null && (
@@ -187,12 +190,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             author={masterData.artists?.[0]?.name ?? '-'}
             title={masterData.title}
           />
-          <button
-            type='button'
-            className='bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 text-white font-semibold rounded-lg text-sm px-6 py-3 transition-shadow shadow-md'
-          >
-            Megszerezve
-          </button>
+          <MarkOwnedButton
+            releaseId={releaseData.id}
+            author={masterData.artists?.[0]?.name ?? ''}
+            title={masterData.title}
+          />
         </div>
       </div>
     </div>
