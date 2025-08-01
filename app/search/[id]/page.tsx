@@ -28,34 +28,41 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       (res) => res.json()
     )
   );
+  console.log(releaseData, 'releasedate');
 
-  const priceSuggestions = use(
-    fetch(
-      `https://api.discogs.com/marketplace/price_suggestions/${releaseData.id}`,
-      {
-        headers: {
-          Authorization: `Discogs token=${process.env.NEXT_PUBLIC_DISCOGS_TOKEN}`,
-        },
-        cache: 'force-cache',
+//youtube helper
+
+function getEmbedUrl(video: any): string {
+  try {
+    const url = new URL(video.uri);
+    if (
+      url.hostname === 'www.youtube.com' ||
+      url.hostname === 'youtube.com'
+    ) {
+      // watch?v=xxx => embed/xxx
+      const id = url.searchParams.get('v');
+      if (id) {
+        return `https://www.youtube.com/embed/${id}`;
       }
-    ).then((res) => res.json())
-  );
+      // playlist, stb. extra esetek kezelése...
+    }
+    if (url.hostname === 'youtu.be') {
+      // youtu.be/xxx
+      return `https://www.youtube.com/embed${url.pathname}`;
+    }
+    if (url.hostname.includes('vimeo.com')) {
+      // vimeo.com/123456789
+      const parts = url.pathname.split('/');
+      const vimeoId = parts[parts.length - 1];
+      return `https://player.vimeo.com/video/${vimeoId}`;
+    }
+    // Default: fallback az eredeti uri-ra
+    return video.uri;
+  } catch {
+    return video.uri;
+  }
+}
 
-  // Átlagár kiszámítás helper
-  const calculateAverage = () => {
-    if (!priceSuggestions) return null;
-    const values = Object.values(priceSuggestions)
-      .map((info) => (info as { value: number }).value)
-      .filter((v) => typeof v === 'number' && !isNaN(v));
-    if (values.length === 0) return null;
-    const sum = values.reduce((acc, curr) => acc + curr, 0);
-    return Math.round((sum / values.length) * 100) / 100;
-  };
-
-  const avgPrice = calculateAverage();
-  const currency =
-    (Object.values(priceSuggestions)[0] as { currency?: string })?.currency ||
-    '';
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-purple-100 px-6 py-10'>
@@ -125,38 +132,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </div>
 
             {/* Árak, price suggestions */}
-            {priceSuggestions && Object.keys(priceSuggestions).length > 0 && (
-              <section className='bg-indigo-50 p-5 rounded-lg shadow-inner max-w-md mx-auto md:mx-0'>
-                <h2 className='text-2xl font-semibold text-indigo-900 mb-4 border-b border-indigo-300 pb-2'>
-                  Árak (Discogs)
-                </h2>
-
-                {avgPrice !== null && (
-                  <p className='text-lg font-bold mb-4 text-indigo-800'>
-                    Átlagár: {avgPrice} {currency}
-                  </p>
-                )}
-
-                <ul className='divide-y divide-indigo-200 max-h-88 overflow-y-auto'>
-                  {Object.entries(priceSuggestions)
-                    .reverse()
-                    .map(([condition, info]) => {
-                      const val = info as { value: number; currency: string };
-                      const valueRounded = Math.round(val.value * 100) / 100;
-                      return (
-                        <li
-                          key={condition}
-                          className='flex justify-between py-2 px-3 hover:bg-indigo-100 rounded'
-                        >
-                          <span className='font-medium'>{condition}</span>
-                          <span>
-                            {valueRounded} {val.currency}
-                          </span>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </section>
+            {releaseData.lowest_price && (
+              <p>
+                <span className='font-semibold'>Legalacsonyabb ár: </span>{' '}
+                {releaseData.lowest_price} USD
+              </p>
             )}
           </div>
         </div>
@@ -182,6 +162,35 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </ul>
           </div>
         )}
+        {/* Videók megjelenítése */}
+        {releaseData.videos && releaseData.videos.length > 0 && (
+  <section className='mt-10 max-w-4xl mx-auto'>
+    <h2 className='text-3xl font-semibold text-gray-800 mb-5 border-b border-gray-300 pb-2 text-center md:text-start'>
+      Videók
+    </h2>
+    <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+      {releaseData.videos.map((video: any, index: number) => (
+        <div key={index} className='aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md'>
+          {video.title && (
+            <p className='mb-2 mt-2 text-center text-sm text-gray-600 font-medium'>
+              {video.title}
+            </p>
+          )}
+          <iframe
+            width='560'
+            height='315'
+            src={getEmbedUrl(video)}
+            title={video.title ?? `Video ${index + 1}`}
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            referrerPolicy='strict-origin-when-cross-origin'
+            allowFullScreen
+            ></iframe>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
 
         {/* Gombok */}
         <div className='mt-12 flex flex-wrap gap-4 justify-center md:justify-start'>
@@ -191,7 +200,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             title={masterData.title}
           />
           <MarkOwnedButton
-            releaseId={releaseData.id}
+            id={masterData.id}
             author={masterData.artists?.[0]?.name ?? ''}
             title={masterData.title}
           />
