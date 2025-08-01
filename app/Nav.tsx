@@ -6,44 +6,56 @@ const NavBar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="relative bg-gradient-to-r from-indigo-50 to-white shadow-lg px-6 py-1">
+    <header className="relative bg-gradient-to-r from-indigo-900 via-zinc-900 to-black shadow-xl px-6 py-2">
       <div className="flex items-center justify-between max-w-4xl mx-auto">
 
-        {/* Logó kép */}
-        <Link href="/" className="flex items-center gap-2">
+        {/* Logó */}
+        <Link href="/" className="flex items-center gap-3">
           <img
             src="/bakeliteka.png"
             alt="BakelitBázis logó"
-            className="h-30 w-30  object-contain drop-shadow-md"
+            className="h-10 w-10 rounded-full shadow-lg object-contain border border-zinc-700 bg-white/60"
           />
-          
+          <span className="text-xl font-extrabold text-gray-100 drop-shadow-sm tracking-wider">
+            BakelitBázis
+          </span>
         </Link>
 
         {/* Hamburger ikon */}
         <button
-          className="md:hidden flex items-center p-2 rounded hover:bg-indigo-100 transition"
+          className="md:hidden flex items-center p-2 rounded hover:bg-zinc-800 transition"
           onClick={() => setOpen(!open)}
           aria-label="Menü megnyitása"
         >
           <span className="w-7 h-7 flex flex-col justify-between">
-            <span className="block w-7 h-0.5 bg-gray-800 mb-1 rounded"></span>
-            <span className="block w-7 h-0.5 bg-gray-800 mb-1 rounded"></span>
-            <span className="block w-7 h-0.5 bg-gray-800 rounded"></span>
+            <span className="block w-7 h-0.5 bg-gray-200 mb-1 rounded"></span>
+            <span className="block w-7 h-0.5 bg-gray-200 mb-1 rounded"></span>
+            <span className="block w-7 h-0.5 bg-gray-200 rounded"></span>
           </span>
         </button>
 
-        {/* Menü */}
+        {/* Menümobil/sötét, üveges dizájn */}
         <nav
-          className={`absolute top-full left-0 w-full bg-white md:static md:bg-transparent md:w-auto z-40 transition-all duration-300 ease-in-out ${
-            open ? 'flex justify-center' : 'hidden md:flex'
-          }`}
+          className={`absolute top-full left-0 w-full md:static md:w-auto z-40
+            transition-all duration-300 ease-in-out
+            ${
+              open
+                ? 'flex justify-center bg-zinc-900/95 backdrop-blur-sm shadow-xl'
+                : 'hidden md:flex bg-transparent'
+            }`}
         >
-          <ul className="flex flex-col md:flex-row gap-2 md:gap-8 text-gray-700 text-base font-medium py-3 md:py-0 px-2 md:px-0">
+          <ul className="
+            flex flex-col md:flex-row gap-2 md:gap-10 text-gray-200 text-base font-semibold py-4 md:py-0 px-2 md:px-0
+            ">
             <li>
               <Link
                 href="/owned"
                 onClick={() => setOpen(false)}
-                className="block py-2 px-4 rounded hover:bg-indigo-100 hover:text-indigo-600 transition duration-200 text-center"
+                className="
+                  block py-2 px-5 rounded-xl text-center
+                  hover:bg-indigo-700 hover:text-white transition duration-200
+                  hover:scale-105 active:bg-indigo-950
+                "
               >
                 Saját gyűjtemény
               </Link>
@@ -52,7 +64,11 @@ const NavBar = () => {
               <Link
                 href="/wishlist"
                 onClick={() => setOpen(false)}
-                className="block py-2 px-4 rounded hover:bg-indigo-100 hover:text-indigo-600 transition duration-200 text-center"
+                className="
+                  block py-2 px-5 rounded-xl text-center
+                  hover:bg-indigo-700 hover:text-white transition duration-200
+                  hover:scale-105 active:bg-indigo-950
+                "
               >
                 Kívánságlista
               </Link>
@@ -61,7 +77,11 @@ const NavBar = () => {
               <Link
                 href="/search"
                 onClick={() => setOpen(false)}
-                className="block py-2 px-4 rounded hover:bg-indigo-100 hover:text-indigo-600 transition duration-200 text-center"
+                className="
+                  block py-2 px-5 rounded-xl text-center
+                  hover:bg-indigo-700 hover:text-white transition duration-200
+                  hover:scale-105 active:bg-indigo-950
+                "
               >
                 Böngészés
               </Link>
@@ -69,10 +89,10 @@ const NavBar = () => {
           </ul>
         </nav>
       </div>
-      {/* Mobile menu background overlay */}
+      {/* Mobile menu dark overlay */}
       {open && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-opacity-30 z-30 md:hidden"
+          className="fixed top-0 left-0 w-full h-full bg-zinc-900/70 backdrop-blur-md z-30 md:hidden"
           onClick={() => setOpen(false)}
         />
       )}

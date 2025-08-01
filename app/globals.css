@@ -16,3 +16,10 @@ body {
   color: rgb(var(--foreground-rgb));
   color: black;
 }
+
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+}

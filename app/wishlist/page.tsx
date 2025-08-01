@@ -175,12 +175,7 @@ const WishList = () => {
                       >
                         Visszavonás
                       </button>
-                      <button
-                        onClick={() => deleteItem(id)}
-                        className='px-3 py-1 rounded text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 transition'
-                      >
-                        Törlés
-                      </button>
+                     
                     </div>
                   </li>
                 ))}

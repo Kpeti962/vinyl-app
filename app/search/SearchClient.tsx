@@ -85,21 +85,27 @@ const SearchClient = () => {
 
       <ul className='space-y-4'>
         {results.map((item) => (
+          
           <li key={item.id}>
-            <Link
-              href={`/search/${item.id.toString()}`}
-              className='flex items-center gap-4 border-b pb-2'
-              
-            >
+            <div className='flex items-center justify-between' key={item.id}  >
+              <div className='flex items-center gap-4'>
+
               <Image
                 src={item.cover_image}
                 alt={item.title}
                 className='w-16 h-16 object-cover rounded'
                 width={424}
                 height={424}
-              />
+                />
               <span className='text-gray-800 font-medium'>{item.title}</span>
+                </div>
+            <Link
+              href={`/search/${item.id.toString()}`}
+              className="ml-2 px-3 py-1 rounded bg-indigo-100 text-indigo-800 hover:bg-indigo-200 text-sm"              
+            >
+              Részletek
             </Link>
+              </div>
           </li>
         ))}
       </ul>
