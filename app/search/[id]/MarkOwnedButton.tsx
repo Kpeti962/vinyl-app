@@ -22,7 +22,6 @@ export default function MarkOwnedButton({
     setError(null);
 
     try {
-      // 1) Hozzáadás a kívánságlistához (wishedvinyls)
       const wishlistRes = await fetch('/api/wishedvinyls', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,10 +33,9 @@ export default function MarkOwnedButton({
 
       if (!wishlistRes.ok) {
         const data = await wishlistRes.json();
-        throw new Error(data.error || 'Hiba a kívánságlistához adás során');
+        throw new Error(data.error || 'Error occurred while adding to wishlist');
       }
 
-      // 2) Ha sikerült, hozzáadás a megszerzett listához (acquisition)
       const acquisitionRes = await fetch('/api/acquisition', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,12 +46,12 @@ export default function MarkOwnedButton({
 
       if (!acquisitionRes.ok) {
         const data = await acquisitionRes.json();
-        throw new Error(data.error || 'Hiba a megszerzett listához adás során');
+        throw new Error(data.error || 'Error occurred while marking as owned');
       }
 
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || 'Ismeretlen hiba történt');
+      setError(err.message || 'Unknown error occurred');
     } finally {
       setLoading(false);
     }
@@ -76,12 +74,12 @@ export default function MarkOwnedButton({
         aria-live="polite"
       >
         {loading
-          ? 'Feldolgozás...'
+          ? 'Loading...'
           : success
-          ? 'Megszerezve!'
-          : 'Megszerezve'}
+          ? 'Acquired!'
+          : 'Acquired'}
       </button>
-      {error && <p className='mt-2 text-red-500 text-sm'>Hiba: {error}</p>}
+      {error && <p className='mt-2 text-red-500 text-sm'>Error: {error}</p>}
     </div>
   );
 }

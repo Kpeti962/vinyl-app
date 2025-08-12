@@ -12,13 +12,11 @@ const NavBar = () => {
         {/* Logó */}
         <Link href="/" className="flex items-center gap-3">
           <img
-            src="/bakeliteka.png"
+            src="/vinylbase.png"
             alt="BakelitBázis logó"
-            className="h-10 w-10 rounded-full shadow-lg object-contain border border-zinc-700 bg-white/60"
+            className="h-10 w-40  shadow-lg object-contain border border-zinc-700 bg-white rounded-lg"
           />
-          <span className="text-xl font-extrabold text-gray-100 drop-shadow-sm tracking-wider">
-            BakelitBázis
-          </span>
+          
         </Link>
 
         {/* Hamburger ikon */}
@@ -57,7 +55,7 @@ const NavBar = () => {
                   hover:scale-105 active:bg-indigo-950
                 "
               >
-                Saját gyűjtemény
+                My collection
               </Link>
             </li>
             <li>
@@ -70,7 +68,7 @@ const NavBar = () => {
                   hover:scale-105 active:bg-indigo-950
                 "
               >
-                Kívánságlista
+                Wishlist
               </Link>
             </li>
             <li>
@@ -83,7 +81,7 @@ const NavBar = () => {
                   hover:scale-105 active:bg-indigo-950
                 "
               >
-                Böngészés
+                Search
               </Link>
             </li>
           </ul>

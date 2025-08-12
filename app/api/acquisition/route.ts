@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     if (exists) {
       return NextResponse.json(
-        { error: 'Ez a bakelit már megszerzésként szerepel.' },
+        { error: 'Ez a bakelit már megszerzettként szerepel.' },
         { status: 409 }
       );
     }

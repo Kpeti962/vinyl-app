@@ -96,35 +96,35 @@ function getEmbedUrl(video: any): string {
               <div className='text-sm text-gray-600 space-y-1 mt-4 max-w-md mx-auto md:mx-0'>
                 {masterData.year && (
                   <p>
-                    <span className='font-semibold'>Megjelenés éve:</span>{' '}
+                    <span className='font-semibold'>Year:</span>{' '}
                     {masterData.year}
                   </p>
                 )}
 
                 {releaseData.labels?.[0]?.name && (
                   <p>
-                    <span className='font-semibold'>Kiadó:</span>{' '}
+                    <span className='font-semibold'>Publisher:</span>{' '}
                     {releaseData.labels[0].name}
                   </p>
                 )}
 
                 {releaseData.country && (
                   <p>
-                    <span className='font-semibold'>Ország:</span>{' '}
+                    <span className='font-semibold'>Country:</span>{' '}
                     {releaseData.country}
                   </p>
                 )}
 
                 {masterData.genres && (
                   <p>
-                    <span className='font-semibold'>Műfaj:</span>{' '}
+                    <span className='font-semibold'>Genre:</span>{' '}
                     {masterData.genres.join(', ')}
                   </p>
                 )}
 
                 {masterData.styles && (
                   <p>
-                    <span className='font-semibold'>Stílus:</span>{' '}
+                    <span className='font-semibold'>Style:</span>{' '}
                     {masterData.styles.join(', ')}
                   </p>
                 )}
@@ -134,18 +134,31 @@ function getEmbedUrl(video: any): string {
             {/* Árak, price suggestions */}
             {releaseData.lowest_price && (
               <p>
-                <span className='font-semibold'>Legalacsonyabb ár: </span>{' '}
+                <span className='font-semibold'>Lowest price: </span>{' '}
                 {releaseData.lowest_price} USD
               </p>
             )}
           </div>
+        </div>
+        {/* Gombok */}
+        <div className='mt-12 flex flex-wrap gap-4 justify-center md:justify-start'>
+          <WishlistButton
+            id={masterData.id}
+            author={masterData.artists?.[0]?.name ?? '-'}
+            title={masterData.title}
+          />
+          <MarkOwnedButton
+            id={masterData.id}
+            author={masterData.artists?.[0]?.name ?? ''}
+            title={masterData.title}
+          />
         </div>
 
         {/* Tracklista */}
         {masterData.tracklist?.length > 0 && (
           <div className='mt-10 max-w-4xl mx-auto'>
             <h2 className='text-3xl text-center md:text-start font-semibold text-gray-800 mb-5 border-b border-gray-300 pb-2'>
-              Tracklista
+              Tracklist
             </h2>
             <ul className='grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-gray-700 text-base list-disc list-inside'>
               {masterData.tracklist.map((track: any, idx: number) => (
@@ -166,7 +179,7 @@ function getEmbedUrl(video: any): string {
         {releaseData.videos && releaseData.videos.length > 0 && (
   <section className='mt-10 max-w-4xl mx-auto'>
     <h2 className='text-3xl font-semibold text-gray-800 mb-5 border-b border-gray-300 pb-2 text-center md:text-start'>
-      Videók
+      Videos
     </h2>
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
       {releaseData.videos.map((video: any, index: number) => (
@@ -192,19 +205,7 @@ function getEmbedUrl(video: any): string {
 )}
 
 
-        {/* Gombok */}
-        <div className='mt-12 flex flex-wrap gap-4 justify-center md:justify-start'>
-          <WishlistButton
-            id={masterData.id}
-            author={masterData.artists?.[0]?.name ?? '-'}
-            title={masterData.title}
-          />
-          <MarkOwnedButton
-            id={masterData.id}
-            author={masterData.artists?.[0]?.name ?? ''}
-            title={masterData.title}
-          />
-        </div>
+        
       </div>
     </div>
   );

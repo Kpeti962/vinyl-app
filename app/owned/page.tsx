@@ -34,11 +34,11 @@ const OwnedVinyls = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-semibold mb-6 text-center text-indigo-700">Megszerezett bakelitek</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-center text-indigo-700">Acquired vinyls</h1>
 
-      {loading && <p className="text-center text-gray-500">Betöltés...</p>}
-      {error && <p className="text-center text-red-600 font-medium">Hiba: {error}</p>}
-      {!loading && !error && data.length === 0 && <p className="text-center text-gray-600">Nincs megszerzett bakelit.</p>}
+      {loading && <p className="text-center text-gray-500">Loading...</p>}
+      {error && <p className="text-center text-red-600 font-medium">Error: {error}</p>}
+      {!loading && !error && data.length === 0 && <p className="text-center text-gray-600">No acquired vinyls.</p>}
 
       <ul className="space-y-3">
         {data.map(({ id, author, title, acquiredAt }) => (

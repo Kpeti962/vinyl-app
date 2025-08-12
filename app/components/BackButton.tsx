@@ -47,7 +47,7 @@ export default function BackButton() {
           </g>{' '}
         </g>
       </svg>
-      Vissza
+      Back
     </button>
   );
 }

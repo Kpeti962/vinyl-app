@@ -36,7 +36,7 @@ const SearchClient = () => {
       const data = await res.json();
       setResults(data.results || []);
     } catch (error) {
-      console.error('Hiba történt a keresés során:', error);
+      console.error('Search error', error);
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,7 @@ const SearchClient = () => {
           type='text'
           onChange={(e) => setSearch(e.target.value)}
           value={search}
-          placeholder='Keresés'
+          placeholder='Search for vinyl...'
           className='border border-gray-300 px-3 py-2 w-full'
         />
         <button
@@ -79,7 +79,7 @@ const SearchClient = () => {
           className='bg-blue-600 text-white px-4 py-2 rounded'
           disabled={loading || !search.trim()}
         >
-          {loading ? 'Keresés...' : 'Keresés'}
+          {loading ? 'Searching...' : 'Searching'}
         </button>
       </div>
 
@@ -103,7 +103,7 @@ const SearchClient = () => {
               href={`/search/${item.id.toString()}`}
               className="ml-2 px-3 py-1 rounded bg-indigo-100 text-indigo-800 hover:bg-indigo-200 text-sm"              
             >
-              Részletek
+              Details
             </Link>
               </div>
           </li>

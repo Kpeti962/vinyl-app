@@ -3,7 +3,7 @@ import SearchClient from './SearchClient';
 
 export default function Search() {
   return (
-    <Suspense fallback={<div>Betöltés...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <SearchClient />
     </Suspense>
   );
